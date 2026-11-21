@@ -25,7 +25,7 @@
 | `tests/test_registry.py`, `tests/test_stdio.py` | 임시 KB 기반 단위·동시성·stdio 테스트 |
 | `examples/opencode.json` | OpenCode V2 로컬 MCP 연결 예시 |
 | `README.md` | 설치·운영·Writer 연동 안내 |
-| `docs/TECHNICAL_DRAFT.md` | 개념별 원소형 계층 기술자료 초안 |
+| `docs/TECHNICAL_DRAFT.md` | 개념별 로컬 요약·정식 MKR 자료 링크 |
 | `docs/VERIFICATION.md` | 검증 결과·외부 동기화 상태 |
 
 ## 검증 결과
@@ -54,9 +54,20 @@
 
 ## 외부 동기화·남은 항목
 
-- GitHub: Git CLI HTTPS·SSH 인증은 없었으므로 인증된 GitHub MCP를 통한 업로드를 사용합니다. 실제 완료 commit과 원격 일치 결과는 작업 완료 보고에서 확인합니다. 실행 비트에 의존하지 않도록 연결 예시와 테스트는 `bash scripts/run.sh`를 사용합니다.
-- YouTrack: 첫 조회에서 HTTP 429·15분 lockout. 재시도·우회하지 않았으며 MS-A-2 템플릿 및 MKR 프로젝트 확인 전에는 게시 완료로 간주하지 않습니다.
-- `TECHNICAL_DRAFT.md`는 템플릿 적용 전 초안입니다. 템플릿 확인과 MKR의 원소형 계층 자료 생성은 별도 결과 확인이 필요합니다.
+- GitHub: Git CLI HTTPS·SSH 인증이 없어 인증된 GitHub MCP로 업로드했습니다. 검증한 코드 commit은 `a3d0df3d895de15aed3a307e991de153dd5cd034`이며 `git fetch` 후 로컬과 원격 tree가 완전히 일치했습니다. 이후 변경은 게시 결과를 반영한 문서뿐입니다. 실행 비트에 의존하지 않도록 연결 예시와 테스트는 `bash scripts/run.sh`를 사용합니다.
+- YouTrack: 첫 조회에서 HTTP 429·15분 lockout이 발생했습니다. 해제까지 재시도·우회하지 않았고, 08:20 UTC 이후 단일 호출씩 순차 재개하여 추가 429 없이 완료했습니다.
+- MS-A-2 원문 전체 144줄을 확인해 0~8절과 하위 명세 구조를 적용했습니다. 프로젝트 `MKR / MCP:KB-Registry / isArchived=false` 확인, 생성 전 이슈·자료 검색 0건 확인 후 게시했습니다.
+- 추적 이슈: [MKR-1](https://homeserver.tail505a16.ts.net/issue/MKR-1). 기존 `Stage=백로그`는 임의 변경하지 않고 구현·검증 완료 결과를 본문에 기록했습니다.
+- 계층 자료 8개 생성·재조회 확인:
+  - [MKR-A-1 — 구성·책임 경계](https://homeserver.tail505a16.ts.net/articles/MKR-A-1): root
+  - [MKR-A-2 — 불변 문서 ID](https://homeserver.tail505a16.ts.net/articles/MKR-A-2): A-1 하위
+  - [MKR-A-3 — 가변 문서 경로](https://homeserver.tail505a16.ts.net/articles/MKR-A-3): A-1 하위
+  - [MKR-A-4 — 카테고리 표시 번호](https://homeserver.tail505a16.ts.net/articles/MKR-A-4): A-1 하위
+  - [MKR-A-5 — 파일 동기화](https://homeserver.tail505a16.ts.net/articles/MKR-A-5): A-1 하위
+  - [MKR-A-6 — MCP stdio](https://homeserver.tail505a16.ts.net/articles/MKR-A-6): A-1 하위
+  - [MKR-A-7 — SQLite 저장 무결성](https://homeserver.tail505a16.ts.net/articles/MKR-A-7): A-1 하위
+  - [MKR-A-8 — 최초 초기화 flock](https://homeserver.tail505a16.ts.net/articles/MKR-A-8): A-7 하위
+- 모든 자료에 코드 SHA와 검증 근거를 기록했습니다. `TECHNICAL_DRAFT.md`는 기존 파일명을 유지한 로컬 개념 요약이며 정식 템플릿 적용 원문은 위 YouTrack 자료입니다.
 - OpenCode 예시는 제공했지만 실제 사용자 설정을 자동 변경하거나 서버를 전역 등록하지 않았습니다.
 - 기존 Writer 설정이 `knowledge/**`를 가정하는 부분은 운영자가 실제 `Documents/**`와 권한 정책을 검토해야 합니다.
 - 커밋된 코드에는 운영 DB·개인 문서 내용·비밀값을 포함하지 않습니다.

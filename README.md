@@ -128,4 +128,4 @@ opencode mcp list
 - 외부 symlink 파일을 거부하며 symlink 디렉터리는 내부를 가리키더라도 스캔하지 않고 안전 실패합니다.
 - 백업은 서버를 중단하거나 SQLite backup API를 사용하세요. 활성 WAL 모드에서 DB 파일만 복사하면 최신 변경이 빠질 수 있습니다.
 - DB를 삭제·초기화하면 과거 번호 예약이 사라집니다. 임의 초기화 대신 검증·백업 복원을 우선합니다.
-- 기술 개념별 초안은 [`docs/TECHNICAL_DRAFT.md`](docs/TECHNICAL_DRAFT.md)입니다. MS-A-2 템플릿 확인·MKR 동기화 여부는 검증 보고서에 별도 기록합니다.
+- 기술 개념별 로컬 요약은 [`docs/TECHNICAL_DRAFT.md`](docs/TECHNICAL_DRAFT.md)입니다. MS-A-2 원문을 확인해 작성한 정식 계층형 기술자료 8개는 [MKR-A-1](https://homeserver.tail505a16.ts.net/articles/MKR-A-1)에서 시작하며, 구현 추적 이슈는 [MKR-1](https://homeserver.tail505a16.ts.net/issue/MKR-1)입니다.

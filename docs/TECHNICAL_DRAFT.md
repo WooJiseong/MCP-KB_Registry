@@ -1,6 +1,6 @@
-# KB Registry 기술자료 — 로컬 초안
+# KB Registry 기술자료 — 로컬 개념 요약
 
-> 대상 프로젝트: MCP:KB-Registry (MKR). MS-A-2 원문은 YouTrack HTTP 429로 확인하지 못했습니다. 아래는 템플릿 적용 전 초안이며 YouTrack 게시 완료본이 아닙니다. 문서 제목의 구분은 자료 계층이며 KB ID나 YouTrack 문서 번호가 아닙니다.
+> 대상 프로젝트: MCP:KB-Registry (MKR). 최초 HTTP 429 해제 후 MS-A-2 원문 전체를 확인하고, 해당 템플릿을 적용한 기술자료 8개를 MKR에 게시·재조회했습니다. 정식 계층의 시작점은 [MKR-A-1](https://homeserver.tail505a16.ts.net/articles/MKR-A-1)입니다. 이 파일은 초안 경로를 유지한 로컬 개념 요약이며 YouTrack 게시 원문을 그대로 복제한 문서는 아닙니다. 아래 절 제목은 개념 구분이지 Registry에서 발급한 문서 ID가 아닙니다.
 
 ## 계층 지도
 
