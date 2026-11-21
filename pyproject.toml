@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "kb-registry"
+version = "0.1.0"
+description = "읽기 전용 문서 검사와 SQLite 기반 지식 문서 식별자 Registry"
+requires-python = ">=3.12"
+dependencies = ["fastmcp>=3.4.11,<4", "PyYAML>=6.0.2,<7"]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<10"]
+
+[project.scripts]
+kb-registry = "kb_registry.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/kb_registry"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

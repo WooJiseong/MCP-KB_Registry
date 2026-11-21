@@ -1,0 +1,15 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "servers": {
+      "kb-registry": {
+        "type": "local",
+        "command": ["bash", "/srv/nas/hdd1000/share/services/KB_Registry/scripts/run.sh"],
+        "environment": {
+          "KB_REGISTRY_ROOT": "/srv/nas/hdd1000/share/Knowledge_Base/Documents",
+          "KB_REGISTRY_DB": "/srv/nas/hdd1000/share/services/KB_Registry/data/registry.sqlite3"
+        }
+      }
+    }
+  }
+}
