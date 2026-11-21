@@ -1,6 +1,6 @@
 # Knowledge Base Registry MCP
 
-Python 3.12 · FastMCP · SQLite 기반 독립적인 로컬 stdio 서버입니다. 문서 ID·카테고리 번호·경로·YouTrack Issue 관계를 관리하며 **문서 파일은 읽기만 합니다**. systemd, HTTP 포트, ContextForge 등록은 필요하지 않습니다.
+Python 3.12 · FastMCP · SQLite 기반 Linux용 독립적인 로컬 stdio 서버입니다. 문서 ID·카테고리 번호·경로·YouTrack Issue 관계를 관리하며 **문서 파일은 읽기만 합니다**. systemd, HTTP 포트, ContextForge 등록은 필요하지 않습니다.
 
 ## 설치와 실행
 
@@ -18,7 +18,9 @@ stdio 서버이므로 터미널에서 대화형 명령 프롬프트가 나타나
 | `KB_REGISTRY_ROOT` | `/srv/nas/hdd1000/share/Knowledge_Base/Documents` |
 | `KB_REGISTRY_DB` | 서비스 디렉터리의 `data/registry.sqlite3` |
 
-DB와 WAL/SHM 파일, 가상환경은 Git에서 제외합니다. DB는 영속 경로에 두고 SQLite 잠금이 정상인 **동일 호스트의 로컬 파일시스템**에서 사용하세요. 여러 호스트의 NFS/SMB 공유 DB 운영은 보장하지 않습니다. 하나의 DB는 하나의 정규화된 KB 루트에 대응합니다.
+DB와 WAL/SHM·초기화 잠금 파일, 가상환경은 Git에서 제외합니다. DB는 영속 경로에 두고 SQLite 잠금이 정상인 **동일 호스트의 로컬 파일시스템**에서 사용하세요. 여러 호스트의 NFS/SMB 공유 DB 운영은 보장하지 않습니다. 하나의 DB는 하나의 정규화된 KB 루트에 대응합니다.
+
+최초 WAL 전환·스키마 초기화는 표준 라이브러리 `fcntl.flock`으로 직렬화하고, 일반 쓰기는 SQLite `BEGIN IMMEDIATE`와 `busy_timeout`으로 보호합니다. DB 옆의 `.init.lock` 파일은 잠금 inode를 유지하기 위해 삭제하지 않습니다. 파일 존재 자체는 잠김을 뜻하지 않으며 프로세스 종료 시 커널 잠금은 자동 해제됩니다. 초기화 잠금 대기는 시간 제한이 없으므로 시작이 멈춘 경우 파일을 지우지 말고 기존 프로세스의 정지 여부를 점검하세요.
 
 ## 책임과 데이터 계약
 

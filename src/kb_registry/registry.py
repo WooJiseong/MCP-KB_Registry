@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import fcntl
 import os
 import re
 import sqlite3
@@ -59,17 +60,24 @@ class Registry:
         self.db_path = Path(db_path or os.environ.get("KB_REGISTRY_DB", default_db)).expanduser().resolve()
         self.db_path.parent.mkdir(parents=True, exist_ok=True)
         try:
-            with self._connection() as db:
-                db.execute("PRAGMA journal_mode=WAL")
-                version = db.execute("PRAGMA user_version").fetchone()[0]
-                if version not in (0, 1):
-                    raise RegistryError("지원하지 않는 Registry DB schema 버전입니다.")
-                db.executescript(Path(__file__).with_name("schema.sql").read_text(encoding="utf-8"))
-            with self._transaction() as db:
-                row = db.execute("SELECT value FROM settings WHERE key='root'").fetchone()
-                if row and row[0] != str(self.root):
-                    raise RegistryError("이 DB는 다른 문서 root에 연결되어 있습니다.")
-                db.execute("INSERT OR IGNORE INTO settings VALUES ('root', ?)", (str(self.root),))
+            # 최초 WAL 전환은 busy_timeout만으로 동시 초기화를 보장하지 못한다.
+            # 잠금 파일은 지우지 않아 대기 중인 프로세스가 다른 inode를 잠그지 않게 한다.
+            with self.db_path.with_name(self.db_path.name + ".init.lock").open("a+b") as lock:
+                fcntl.flock(lock, fcntl.LOCK_EX)
+                try:
+                    with self._connection() as db:
+                        db.execute("PRAGMA journal_mode=WAL")
+                        version = db.execute("PRAGMA user_version").fetchone()[0]
+                        if version not in (0, 1):
+                            raise RegistryError("지원하지 않는 Registry DB schema 버전입니다.")
+                        db.executescript(Path(__file__).with_name("schema.sql").read_text(encoding="utf-8"))
+                    with self._transaction() as db:
+                        row = db.execute("SELECT value FROM settings WHERE key='root'").fetchone()
+                        if row and row[0] != str(self.root):
+                            raise RegistryError("이 DB는 다른 문서 root에 연결되어 있습니다.")
+                        db.execute("INSERT OR IGNORE INTO settings VALUES ('root', ?)", (str(self.root),))
+                finally:
+                    fcntl.flock(lock, fcntl.LOCK_UN)
         except OSError as exc:
             raise RegistryError(f"Registry DB 초기화에 실패했습니다: {exc}") from exc
 

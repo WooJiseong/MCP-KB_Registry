@@ -80,6 +80,15 @@ def test_multiprocess_idempotency(env):
         assert conn.execute("SELECT count(*) FROM history WHERE event='category_assigned'").fetchone()[0] == 1
 
 
+def test_multiprocess_first_initialization(tmp_path):
+    root = tmp_path / "Documents"
+    root.mkdir()
+    db = tmp_path / "new.sqlite3"
+    with ProcessPoolExecutor(max_workers=8) as pool:
+        results = list(pool.map(allocate_process, [(db, root, n) for n in range(16)]))
+    assert len({d["kb_id"] for d in results}) == 16
+
+
 def test_concurrent_retries_same_path(env):
     r, _, _ = env
     with ThreadPoolExecutor(max_workers=6) as pool:
